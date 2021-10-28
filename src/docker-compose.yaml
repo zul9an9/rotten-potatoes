@@ -1,0 +1,31 @@
+version: "3"
+
+networks:
+  rotten_net:
+    driver: bridge
+
+services:
+  mongo:
+    image: mongo:4.4.7
+    networks:
+      - rotten_net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopwd  
+
+  web:
+    image: zul9an9/rotten-potatoes:v1
+    depends_on: 
+      - mongo
+    networks:
+      - rotten_net
+    environment:
+      MONGODB_DB: admin
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017      
+      MONGODB_USERNAME: mongouser
+      MONGODB_PASSWORD: mongopwd
+    ports:
+      - "8080:5000"
+
+
